@@ -131,7 +131,7 @@ nav{
     </h1>
 
     <p class="hero-sub">
-      Chat with our AI assistant to browse the menu, customize your order, and get your payment link instantly.
+      Chat with our AI assistant to browse the menu, customize your order.
     </p>
 
   </div>
@@ -155,14 +155,27 @@ function applyRetellBranding() {
 
     const root = host.shadowRoot;
 
+    // ---------------------------
+    // INJECT CSS INTO SHADOW DOM (overrides Retell's own styles)
+    // ---------------------------
+    if (!root.querySelector('style[data-park]')) {
+      const style = document.createElement('style');
+      style.setAttribute('data-park', '1');
+      style.textContent = `
+        button {
+          background: transparent !important;
+          box-shadow: none !important;
+          border: none !important;
+        }
+      `;
+      root.appendChild(style);
+    }
+
     const btn = root.querySelector('button');
     const text = root.querySelector('span');
 
     if (btn && text) {
 
-      // ---------------------------
-      // TEXT FIX (always enforce)
-      // ---------------------------
       if (
         text.textContent.includes("Need support") ||
         text.textContent.includes("Support")
@@ -170,45 +183,31 @@ function applyRetellBranding() {
         text.textContent = "🍕 Order Here";
       }
 
-      // ---------------------------
-      // FLOATING BUTTON SIZE FIX
-      // ---------------------------
-      btn.style.transform = "scale(0.95)";
-      btn.style.transformOrigin = "bottom right";
-      btn.style.padding = "14px 18px";
-      btn.style.borderRadius = "999px";
-
-      // ---------------------------
-      // PARK PIZZA THEME
-      // ---------------------------
-      btn.style.background = "#C8321A";
-      btn.style.color = "#fff";
-      btn.style.border = "none";
+      // Re-apply red ONLY to the main Order Here button
+      btn.style.setProperty('background', '#C8321A', 'important');
+      btn.style.setProperty('color', '#fff', 'important');
       btn.style.fontWeight = "700";
-      btn.style.boxShadow = "0 12px 40px rgba(200,50,26,0.35)";
       btn.style.fontFamily = "Inter, sans-serif";
 
-      // ---------------------------
-      // HOVER EFFECT
-      // ---------------------------
       btn.onmouseenter = () => {
-        btn.style.transform = "scale(1.0)";
-        btn.style.boxShadow = "0 18px 55px rgba(200,50,26,0.5)";
+        btn.style.setProperty('box-shadow', '0 18px 55px rgba(200,50,26,0.5)', 'important');
       };
-
       btn.onmouseleave = () => {
-        btn.style.transform = "scale(0.95)";
-        btn.style.boxShadow = "0 12px 40px rgba(200,50,26,0.35)";
+        btn.style.setProperty('box-shadow', '0 12px 40px rgba(200,50,26,0.35)', 'important');
       };
     }
 
-    // ---------------------------
-    // CHAT WINDOW SIZE FIX
-    // ---------------------------
+    // Status dot
+    const statusDot =
+      root.querySelector('[class*="status"]') ||
+      root.querySelector('[class*="indicator"]') ||
+      root.querySelector('svg + div');
+    if (statusDot) statusDot.style.display = "none";
+
+    // Chat window size
     const chatWindow =
       root.querySelector('div[role="dialog"]') ||
       root.querySelector('div');
-
     if (chatWindow) {
       chatWindow.style.maxHeight = "70vh";
       chatWindow.style.height = "70vh";
