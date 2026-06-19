@@ -19,24 +19,18 @@
   --tomato:#C8321A;
   --cream:#FDF6EC;
   --muted:#7A6A55;
-  --white:#FFFFFF;
 }
 
-html,
-body{
+html,body{
   width:100%;
   height:100%;
   overflow:hidden;
-}
-
-body{
   background:var(--cream);
-  color:var(--crust);
   font-family:'Inter',sans-serif;
+  color:var(--crust);
 }
 
-/* NAVBAR */
-
+/* NAV */
 nav{
   position:fixed;
   top:0;
@@ -44,108 +38,78 @@ nav{
   right:0;
   z-index:100;
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  padding:20px 50px;
-  background:rgba(253,246,236,.95);
+  align-items:center;
+  padding:18px 40px;
+  background:rgba(253,246,236,0.95);
   backdrop-filter:blur(10px);
-  border-bottom:1px solid rgba(200,50,26,.08);
+  border-bottom:1px solid rgba(200,50,26,0.1);
 }
 
 .logo{
   font-family:'Playfair Display',serif;
-  font-size:1.8rem;
+  font-size:1.6rem;
   font-weight:900;
   color:var(--tomato);
 }
 
-.logo span{
-  color:var(--crust);
-}
-
 /* HERO */
-
 .hero{
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
   text-align:center;
-  padding:0 24px;
+  padding:0 20px;
 }
 
 .hero-content{
-  max-width:760px;
+  max-width:750px;
 }
 
 .hero-eyebrow{
   display:inline-flex;
-  align-items:center;
-  gap:8px;
-  background:rgba(200,50,26,.08);
-  color:var(--tomato);
   padding:8px 16px;
   border-radius:999px;
+  background:rgba(200,50,26,0.08);
+  color:var(--tomato);
   font-size:.75rem;
   font-weight:600;
-  letter-spacing:.08em;
   text-transform:uppercase;
-  margin-bottom:24px;
+  letter-spacing:.08em;
+  margin-bottom:20px;
 }
 
 .hero-eyebrow::before{
   content:"";
   width:8px;
   height:8px;
-  border-radius:50%;
   background:var(--tomato);
+  border-radius:50%;
+  margin-right:8px;
 }
 
 .hero h1{
   font-family:'Playfair Display',serif;
-  font-size:clamp(3rem,6vw,5rem);
+  font-size:clamp(2.8rem,6vw,4.8rem);
   line-height:1.05;
-  margin-bottom:24px;
-  letter-spacing:-1px;
+  margin-bottom:20px;
 }
 
 .hero h1 em{
   color:var(--tomato);
-  font-style:italic;
 }
 
 .hero-sub{
   color:var(--muted);
-  font-size:1.15rem;
-  line-height:1.8;
-  max-width:650px;
-  margin:auto;
+  font-size:1.1rem;
+  line-height:1.7;
 }
 
 /* MOBILE */
-
 @media(max-width:768px){
-
-  html,
-  body{
-    overflow:auto;
-  }
-
-  nav{
-    padding:18px 24px;
-  }
-
-  .hero{
-    padding:120px 24px 60px;
-  }
-
-  .hero h1{
-    font-size:3rem;
-  }
-
-  .hero-sub{
-    font-size:1rem;
-  }
+  html,body{overflow:auto;}
+  nav{padding:16px 20px;}
 }
 </style>
 </head>
@@ -159,9 +123,7 @@ nav{
 <section class="hero">
   <div class="hero-content">
 
-    <div class="hero-eyebrow">
-      Now Taking Orders Via AI
-    </div>
+    <div class="hero-eyebrow">Now Taking Orders Via AI</div>
 
     <h1>
       Great Pizza,<br>
@@ -169,67 +131,117 @@ nav{
     </h1>
 
     <p class="hero-sub">
-      Chat with our AI ordering assistant to browse the menu,
-      customize your order, and receive a payment link in seconds.
+      Chat with our AI assistant to browse the menu, customize your order, and get your payment link instantly.
     </p>
 
   </div>
 </section>
 
 <!-- RETELL WIDGET -->
-
 <script
   id="retell-widget"
   src="https://dashboard.retellai.com/retell-widget-v2.js"
   data-public-key="public_key_35163ac2f5fe6b1c44bee"
   data-agent-id="agent_128c4a5a69b348a97656589c1d"
-  data-title="🍕 Order Here">
+  data-title="🍕 Order Now">
 </script>
 
-<!-- CUSTOMIZE BUTTON + AUTO OPEN -->
-
+<!-- FIX + STYLE SHADOW DOM BUTTON -->
 <script>
-(function() {
+function applyRetellBranding() {
 
-  const observer = setInterval(() => {
+  document.querySelectorAll('div').forEach(host => {
+    if (!host.shadowRoot) return;
 
-    const buttons = document.querySelectorAll("button");
+    const root = host.shadowRoot;
 
-    buttons.forEach(btn => {
+    const btn = root.querySelector('button');
+    const text = root.querySelector('span');
 
-      const text = (btn.innerText || "").toLowerCase();
+    if (btn && text) {
 
+      // ---------------------------
+      // TEXT FIX (always enforce)
+      // ---------------------------
       if (
-        text.includes("support") ||
-        text.includes("need")
+        text.textContent.includes("Need support") ||
+        text.textContent.includes("Support")
       ) {
-
-        btn.innerHTML = "🍕 Order Here";
-
-        btn.style.background = "#C8321A";
-        btn.style.color = "#ffffff";
-        btn.style.border = "none";
-        btn.style.borderRadius = "999px";
-        btn.style.padding = "14px 22px";
-        btn.style.fontWeight = "600";
-        btn.style.boxShadow = "0 8px 25px rgba(200,50,26,.35)";
-
-        if (!window.retellAutoOpened) {
-
-          window.retellAutoOpened = true;
-
-          setTimeout(() => {
-            btn.click();
-          }, 1200);
-
-        }
+        text.textContent = "🍕 Order Here";
       }
+
+      // ---------------------------
+      // FLOATING BUTTON SIZE FIX
+      // ---------------------------
+      btn.style.transform = "scale(0.95)";
+      btn.style.transformOrigin = "bottom right";
+      btn.style.padding = "14px 18px";
+      btn.style.borderRadius = "999px";
+
+      // ---------------------------
+      // PARK PIZZA THEME
+      // ---------------------------
+      btn.style.background = "#C8321A";
+      btn.style.color = "#fff";
+      btn.style.border = "none";
+      btn.style.fontWeight = "700";
+      btn.style.boxShadow = "0 12px 40px rgba(200,50,26,0.35)";
+      btn.style.fontFamily = "Inter, sans-serif";
+
+      // ---------------------------
+      // HOVER EFFECT
+      // ---------------------------
+      btn.onmouseenter = () => {
+        btn.style.transform = "scale(1.0)";
+        btn.style.boxShadow = "0 18px 55px rgba(200,50,26,0.5)";
+      };
+
+      btn.onmouseleave = () => {
+        btn.style.transform = "scale(0.95)";
+        btn.style.boxShadow = "0 12px 40px rgba(200,50,26,0.35)";
+      };
+    }
+
+    // ---------------------------
+    // CHAT WINDOW SIZE FIX
+    // ---------------------------
+    const chatWindow =
+      root.querySelector('div[role="dialog"]') ||
+      root.querySelector('div');
+
+    if (chatWindow) {
+      chatWindow.style.maxHeight = "70vh";
+      chatWindow.style.height = "70vh";
+      chatWindow.style.width = "380px";
+      chatWindow.style.borderRadius = "18px";
+      chatWindow.style.overflow = "hidden";
+    }
+  });
+}
+
+// Run continuously (Retell resets UI on close/open)
+setInterval(applyRetellBranding, 300);
+</script>
+
+<!-- AUTO OPEN WIDGET -->
+<script>
+window.addEventListener("load", () => {
+
+  setTimeout(() => {
+
+    document.querySelectorAll('div').forEach(host => {
+      if (!host.shadowRoot) return;
+
+      const root = host.shadowRoot;
+      const btn = root.querySelector('button');
+
+      if (btn) btn.click();
 
     });
 
-  }, 500);
+  }, 1200);
 
-})();
+});
 </script>
 
 </body>
