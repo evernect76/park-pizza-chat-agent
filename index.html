@@ -1,654 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Park Pizza — Order Online</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-    <style>
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Park Pizza — Order Online</title>
 
-      :root {
-        --crust:    #1A1208;
-        --tomato:   #C8321A;
-        --cheese:   #F5C842;
-        --cream:    #FDF6EC;
-        --smoke:    #F0E8DA;
-        --muted:    #7A6A55;
-        --white:    #FFFFFF;
-      }
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-      html { scroll-behavior: smooth; }
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-      body {
-        background: var(--cream);
-        color: var(--crust);
-        font-family: 'Inter', sans-serif;
-        min-height: 100vh;
-        overflow-x: hidden;
-      }
+:root{
+  --crust:#1A1208;
+  --tomato:#C8321A;
+  --cream:#FDF6EC;
+  --muted:#7A6A55;
+  --white:#FFFFFF;
+}
 
-      /* ── NAV ── */
-      nav {
-        position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 18px 48px;
-        background: rgba(253,246,236,0.92);
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(200,50,26,0.1);
-      }
-      .logo {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.5rem;
-        font-weight: 900;
-        color: var(--tomato);
-        letter-spacing: -0.5px;
-      }
-      .logo span { color: var(--crust); }
-      nav ul {
-        list-style: none;
-        display: flex; gap: 32px;
-      }
-      nav ul li a {
-        text-decoration: none;
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: var(--muted);
-        transition: color 0.2s;
-      }
-      nav ul li a:hover { color: var(--tomato); }
-      .nav-cta {
-        background: var(--tomato);
-        color: var(--white) !important;
-        padding: 10px 22px;
-        border-radius: 100px;
-        font-weight: 600 !important;
-        transition: background 0.2s !important;
-      }
-      .nav-cta:hover { background: var(--crust) !important; color: var(--white) !important; }
+html,
+body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
 
-      /* ── HERO ── */
-      .hero {
-        min-height: 100vh;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        align-items: center;
-        padding: 120px 48px 80px;
-        gap: 48px;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-      .hero-eyebrow {
-        display: inline-flex; align-items: center; gap: 8px;
-        background: rgba(200,50,26,0.08);
-        color: var(--tomato);
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        padding: 6px 14px;
-        border-radius: 100px;
-        margin-bottom: 24px;
-      }
-      .hero-eyebrow::before {
-        content: '';
-        width: 6px; height: 6px;
-        background: var(--tomato);
-        border-radius: 50%;
-        animation: pulse 1.8s infinite;
-      }
-      @keyframes pulse {
-        0%, 100% { opacity: 1; transform: scale(1); }
-        50% { opacity: 0.4; transform: scale(1.4); }
-      }
-      .hero h1 {
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(2.8rem, 5vw, 4.2rem);
-        font-weight: 900;
-        line-height: 1.08;
-        letter-spacing: -1.5px;
-        margin-bottom: 24px;
-      }
-      .hero h1 em {
-        font-style: italic;
-        color: var(--tomato);
-      }
-      .hero-sub {
-        font-size: 1.05rem;
-        color: var(--muted);
-        line-height: 1.7;
-        max-width: 440px;
-        margin-bottom: 40px;
-      }
-      .hero-actions {
-        display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
-      }
-      .btn-primary {
-        background: var(--tomato);
-        color: var(--white);
-        border: none;
-        padding: 16px 32px;
-        border-radius: 100px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: transform 0.15s, background 0.2s;
-        text-decoration: none;
-        display: inline-block;
-      }
-      .btn-primary:hover { background: var(--crust); transform: translateY(-1px); }
-      .btn-ghost {
-        color: var(--crust);
-        font-size: 0.9rem;
-        font-weight: 500;
-        text-decoration: none;
-        display: flex; align-items: center; gap: 6px;
-        opacity: 0.7;
-        transition: opacity 0.2s;
-      }
-      .btn-ghost:hover { opacity: 1; }
+body{
+  background:var(--cream);
+  color:var(--crust);
+  font-family:'Inter',sans-serif;
+}
 
-      /* ── HERO VISUAL ── */
-      .hero-visual {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-      }
-      .pizza-ring {
-        width: 380px; height: 380px;
-        border-radius: 50%;
-        background: conic-gradient(
-          var(--tomato) 0deg 60deg,
-          var(--cheese) 60deg 120deg,
-          var(--tomato) 120deg 180deg,
-          var(--cheese) 180deg 240deg,
-          var(--tomato) 240deg 300deg,
-          var(--cheese) 300deg 360deg
-        );
-        display: flex; align-items: center; justify-content: center;
-        animation: spin 30s linear infinite;
-        box-shadow: 0 24px 80px rgba(200,50,26,0.25);
-      }
-      @keyframes spin { to { transform: rotate(360deg); } }
-      .pizza-inner {
-        width: 260px; height: 260px;
-        background: var(--cream);
-        border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        flex-direction: column;
-        animation: spin 30s linear infinite reverse;
-      }
-      .pizza-emoji { font-size: 5rem; line-height: 1; }
-      .pizza-label {
-        font-family: 'Playfair Display', serif;
-        font-size: 0.9rem;
-        font-weight: 700;
-        color: var(--tomato);
-        margin-top: 6px;
-        letter-spacing: 0.05em;
-      }
-      .badge {
-        position: absolute;
-        background: var(--crust);
-        color: var(--white);
-        font-size: 0.75rem;
-        font-weight: 600;
-        padding: 8px 16px;
-        border-radius: 100px;
-        white-space: nowrap;
-      }
-      .badge-1 { top: 40px; right: 20px; }
-      .badge-2 { bottom: 60px; left: 10px; background: var(--cheese); color: var(--crust); }
+/* NAVBAR */
 
-      /* ── HOW IT WORKS ── */
-      .section {
-        padding: 96px 48px;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-      .section-label {
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--tomato);
-        margin-bottom: 12px;
-      }
-      .section-title {
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(2rem, 3.5vw, 2.8rem);
-        font-weight: 900;
-        letter-spacing: -1px;
-        margin-bottom: 56px;
-        max-width: 500px;
-        line-height: 1.15;
-      }
-      .steps {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 32px;
-      }
-      .step {
-        background: var(--white);
-        border-radius: 20px;
-        padding: 36px 32px;
-        border: 1px solid var(--smoke);
-        transition: transform 0.2s, box-shadow 0.2s;
-      }
-      .step:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(26,18,8,0.1); }
-      .step-num {
-        font-family: 'Playfair Display', serif;
-        font-size: 3rem;
-        font-weight: 900;
-        color: var(--smoke);
-        line-height: 1;
-        margin-bottom: 16px;
-      }
-      .step h3 {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 10px;
-        color: var(--crust);
-      }
-      .step p {
-        font-size: 0.9rem;
-        color: var(--muted);
-        line-height: 1.65;
-      }
+nav{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:20px 50px;
+  background:rgba(253,246,236,.95);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(200,50,26,.08);
+}
 
-      /* ── DIVIDER ── */
-      .divider {
-        width: 100%; height: 1px;
-        background: linear-gradient(to right, transparent, var(--smoke), transparent);
-        margin: 0 48px;
-        width: calc(100% - 96px);
-      }
+.logo{
+  font-family:'Playfair Display',serif;
+  font-size:1.8rem;
+  font-weight:900;
+  color:var(--tomato);
+}
 
-      /* ── MENU STRIP ── */
-      .menu-strip {
-        background: var(--crust);
-        padding: 64px 48px;
-        text-align: center;
-      }
-      .menu-strip .section-label { color: var(--cheese); }
-      .menu-strip .section-title { color: var(--white); margin: 0 auto 48px; }
-      .menu-grid {
-        display: flex;
-        justify-content: center;
-        gap: 24px;
-        flex-wrap: wrap;
-        max-width: 900px;
-        margin: 0 auto;
-      }
-      .menu-chip {
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.15);
-        color: var(--white);
-        padding: 12px 24px;
-        border-radius: 100px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background 0.2s, border-color 0.2s;
-      }
-      .menu-chip:hover { background: var(--tomato); border-color: var(--tomato); }
-      .menu-chip.active { background: var(--tomato); border-color: var(--tomato); }
+.logo span{
+  color:var(--crust);
+}
 
-      /* ── CHAT CTA ── */
-      .chat-cta {
-        padding: 96px 48px;
-        max-width: 1200px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 64px;
-        align-items: center;
-      }
-      .chat-cta h2 {
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(2rem, 3.5vw, 2.8rem);
-        font-weight: 900;
-        letter-spacing: -1px;
-        line-height: 1.15;
-        margin-bottom: 20px;
-      }
-      .chat-cta h2 em { font-style: italic; color: var(--tomato); }
-      .chat-cta p {
-        color: var(--muted);
-        line-height: 1.7;
-        margin-bottom: 32px;
-        font-size: 1rem;
-      }
-      .feature-list {
-        list-style: none;
-        display: flex; flex-direction: column; gap: 12px;
-      }
-      .feature-list li {
-        display: flex; align-items: center; gap: 12px;
-        font-size: 0.9rem;
-        color: var(--crust);
-        font-weight: 500;
-      }
-      .feature-list li::before {
-        content: '✓';
-        width: 22px; height: 22px;
-        background: rgba(200,50,26,0.1);
-        color: var(--tomato);
-        border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 0.75rem;
-        font-weight: 700;
-        flex-shrink: 0;
-      }
-      .chat-preview {
-        background: var(--white);
-        border-radius: 24px;
-        padding: 32px;
-        border: 1px solid var(--smoke);
-        box-shadow: 0 24px 64px rgba(26,18,8,0.08);
-      }
-      .chat-preview-header {
-        display: flex; align-items: center; gap: 12px;
-        margin-bottom: 24px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid var(--smoke);
-      }
-      .chat-avatar {
-        width: 40px; height: 40px;
-        background: var(--tomato);
-        border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1.2rem;
-      }
-      .chat-preview-header h4 {
-        font-size: 0.9rem;
-        font-weight: 600;
-      }
-      .chat-preview-header span {
-        font-size: 0.75rem;
-        color: #22c55e;
-        font-weight: 500;
-      }
-      .chat-bubble {
-        background: var(--smoke);
-        border-radius: 16px 16px 16px 4px;
-        padding: 12px 16px;
-        font-size: 0.875rem;
-        color: var(--crust);
-        line-height: 1.5;
-        margin-bottom: 12px;
-        max-width: 85%;
-      }
-      .chat-bubble.user {
-        background: var(--tomato);
-        color: var(--white);
-        border-radius: 16px 16px 4px 16px;
-        margin-left: auto;
-      }
-      .chat-input-row {
-        display: flex; gap: 10px; margin-top: 20px;
-        padding-top: 20px;
-        border-top: 1px solid var(--smoke);
-      }
-      .chat-input-row input {
-        flex: 1;
-        background: var(--smoke);
-        border: none;
-        border-radius: 100px;
-        padding: 10px 18px;
-        font-size: 0.85rem;
-        color: var(--crust);
-        outline: none;
-        font-family: 'Inter', sans-serif;
-      }
-      .chat-send {
-        width: 38px; height: 38px;
-        background: var(--tomato);
-        border: none;
-        border-radius: 50%;
-        color: var(--white);
-        font-size: 1rem;
-        cursor: pointer;
-        display: flex; align-items: center; justify-content: center;
-        transition: background 0.2s;
-      }
-      .chat-send:hover { background: var(--crust); }
+/* HERO */
 
-      /* ── FOOTER ── */
-      footer {
-        background: var(--crust);
-        color: rgba(255,255,255,0.5);
-        text-align: center;
-        padding: 32px 48px;
-        font-size: 0.8rem;
-      }
-      footer strong { color: var(--cheese); }
+.hero{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:0 24px;
+}
 
-      /* ── RETELL WIDGET ──
-         The widget iframe cannot be styled from the outside due to
-         same-origin restrictions. Size/colour must be set via JS on
-         the host elements that Retell renders into the page DOM.
-         The rules below target those host elements. ── */
-      #retell-widget-container {
-        width: 340px !important;
-        height: 480px !important;
-        max-height: 480px !important;
-        border-radius: 20px !important;
-        overflow: hidden !important;
-      }
+.hero-content{
+  max-width:760px;
+}
 
-      /* ── RESPONSIVE ── */
-      @media (max-width: 768px) {
-        nav { padding: 16px 24px; }
-        nav ul { display: none; }
-        .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; text-align: center; }
-        .hero-sub { margin: 0 auto 32px; }
-        .hero-actions { justify-content: center; }
-        .hero-visual { display: none; }
-        .section { padding: 64px 24px; }
-        .steps { grid-template-columns: 1fr; }
-        .chat-cta { grid-template-columns: 1fr; padding: 64px 24px; }
-        .menu-strip { padding: 48px 24px; }
-      }
+.hero-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(200,50,26,.08);
+  color:var(--tomato);
+  padding:8px 16px;
+  border-radius:999px;
+  font-size:.75rem;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-bottom:24px;
+}
 
-      @media (prefers-reduced-motion: reduce) {
-        .pizza-ring, .pizza-inner { animation: none; }
-        .hero-eyebrow::before { animation: none; }
-      }
-    </style>
-  </head>
+.hero-eyebrow::before{
+  content:"";
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--tomato);
+}
 
-  <body>
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(3rem,6vw,5rem);
+  line-height:1.05;
+  margin-bottom:24px;
+  letter-spacing:-1px;
+}
 
-    <!-- NAV -->
-    <nav>
-      <div class="logo">Park<span>Pizza</span></div>
-      <ul>
-        <li><a href="#how">How it works</a></li>
-        <li><a href="#menu">Menu</a></li>
-        <li><a href="#order" class="nav-cta">Order now</a></li>
-      </ul>
-    </nav>
+.hero h1 em{
+  color:var(--tomato);
+  font-style:italic;
+}
 
-    <!-- HERO -->
-    <section>
-      <div class="hero">
-        <div class="hero-content">
-          <div class="hero-eyebrow">Now taking orders via chat</div>
-          <h1>Great pizza,<br><em>ordered your way</em></h1>
-          <p class="hero-sub">
-            Chat with our AI assistant to browse the menu, customize your order, and get a payment link — all in under a minute.
-          </p>
-          <div class="hero-actions">
-            <a href="#order" class="btn-primary">Start your order →</a>
-            <a href="#how" class="btn-ghost">See how it works ↓</a>
-          </div>
-        </div>
-        <div class="hero-visual">
-          <div class="pizza-ring">
-            <div class="pizza-inner">
-              <div class="pizza-emoji">🍕</div>
-              <div class="pizza-label">Park Pizza</div>
-            </div>
-          </div>
-          <div class="badge badge-1">🟢 Open now</div>
-          <div class="badge badge-2">⚡ Ready in 20 min</div>
-        </div>
-      </div>
-    </section>
+.hero-sub{
+  color:var(--muted);
+  font-size:1.15rem;
+  line-height:1.8;
+  max-width:650px;
+  margin:auto;
+}
 
-    <!-- HOW IT WORKS -->
-    <section class="section" id="how">
-      <div class="section-label">Simple process</div>
-      <h2 class="section-title">Three steps to your perfect slice</h2>
-      <div class="steps">
-        <div class="step">
-          <div class="step-num">01</div>
-          <h3>Tell us what you want</h3>
-          <p>Type your order in plain language — "a pepperoni pizza with extra cheese" works just fine.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">02</div>
-          <h3>Customize it</h3>
-          <p>Add toppings, swap sizes, remove ingredients. Our assistant handles all modifications instantly.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">03</div>
-          <h3>Pay & pick up</h3>
-          <p>Receive a secure payment link, complete checkout, and your order goes straight to our kitchen.</p>
-        </div>
-      </div>
-    </section>
+/* MOBILE */
 
-    <div class="divider"></div>
+@media(max-width:768px){
 
-    <!-- MENU STRIP -->
-    <div class="menu-strip" id="menu">
-      <div class="section-label">Our menu</div>
-      <h2 class="section-title">Everything made fresh to order</h2>
-      <div class="menu-grid">
-        <div class="menu-chip active">🍕 Pizzas</div>
-        <div class="menu-chip">🥗 Salads</div>
-        <div class="menu-chip">🍝 Pasta</div>
-        <div class="menu-chip">🥖 Garlic Bread</div>
-        <div class="menu-chip">🧃 Drinks</div>
-        <div class="menu-chip">🍰 Desserts</div>
-      </div>
+  html,
+  body{
+    overflow:auto;
+  }
+
+  nav{
+    padding:18px 24px;
+  }
+
+  .hero{
+    padding:120px 24px 60px;
+  }
+
+  .hero h1{
+    font-size:3rem;
+  }
+
+  .hero-sub{
+    font-size:1rem;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">Park<span>Pizza</span></div>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+
+    <div class="hero-eyebrow">
+      Now Taking Orders Via AI
     </div>
 
-    <!-- CHAT CTA -->
-    <section class="chat-cta" id="order">
-      <div>
-        <div class="section-label">AI ordering</div>
-        <h2>Your order,<br><em>in your words</em></h2>
-        <p>No forms, no dropdowns. Just describe what you want and our assistant takes care of the rest — modifiers, quantities, and all.</p>
-        <ul class="feature-list">
-          <li>Full menu browsing in the chat</li>
-          <li>Custom toppings & modifications</li>
-          <li>Instant secure payment link</li>
-          <li>Pickup ready in about 20 minutes</li>
-        </ul>
-      </div>
-      <div class="chat-preview">
-        <div class="chat-preview-header">
-          <div class="chat-avatar">🍕</div>
-          <div>
-            <h4>Park Pizza Assistant</h4>
-            <span>● Online now</span>
-          </div>
-        </div>
-        <div class="chat-bubble">Welcome to Park Pizza! What can I get started for you today?</div>
-        <div class="chat-bubble user">I'd like a large pepperoni pizza with extra cheese</div>
-        <div class="chat-bubble">Great choice! One large pepperoni with extra cheese. Would you like to add any sides or drinks to your order?</div>
-        <div class="chat-input-row">
-          <input type="text" placeholder="Type your order..." />
-          <button class="chat-send">→</button>
-        </div>
-      </div>
-    </section>
+    <h1>
+      Great Pizza,<br>
+      <em>Ordered Your Way</em>
+    </h1>
 
-    <!-- FOOTER -->
-    <footer>
-      <p>© 2026 <strong>Park Pizza</strong> — Powered by AI ordering. All rights reserved.</p>
-    </footer>
+    <p class="hero-sub">
+      Chat with our AI ordering assistant to browse the menu,
+      customize your order, and receive a payment link in seconds.
+    </p>
 
-    <!-- RETELL CHAT WIDGET -->
-    <script
-      id="retell-widget"
-      src="https://dashboard.retellai.com/retell-widget-v2.js"
-      data-public-key="public_key_35163ac2f5fe6b1c44bee"
-      data-agent-id="agent_128c4a5a69b348a97656589c1d"
-      data-title="Order from Park Pizza"
-    ></script>
+  </div>
+</section>
 
-    <script>
-      // Retell renders its launcher button into the page DOM after the script loads.
-      // We poll for it and apply brand styles + swap the label text.
-      // CSS class names inside the widget iframe cannot be targeted from here.
-      (function patchRetell() {
-        const INTERVAL = 200;   // check every 200 ms
-        const MAX_TRIES = 50;   // give up after 10 s
-        let tries = 0;
+<!-- RETELL WIDGET -->
 
-        const timer = setInterval(() => {
-          tries++;
+<script
+  id="retell-widget"
+  src="https://dashboard.retellai.com/retell-widget-v2.js"
+  data-public-key="public_key_35163ac2f5fe6b1c44bee"
+  data-agent-id="agent_128c4a5a69b348a97656589c1d"
+  data-title="🍕 Order Here">
+</script>
 
-          // Retell typically adds a button or an element with "retell" in its id/class
-          const btn =
-            document.querySelector('[id*="retell"]') ||
-            document.querySelector('[class*="retell"]');
+<!-- CUSTOMIZE BUTTON + AUTO OPEN -->
 
-          if (btn) {
-            // ── Size the container ──
-            const container = btn.closest('div') || btn.parentElement;
-            if (container && container !== document.body) {
-              Object.assign(container.style, {
-                width:        '340px',
-                height:       '480px',
-                maxHeight:    '480px',
-                borderRadius: '20px',
-                overflow:     'hidden',
-              });
-            }
+<script>
+(function() {
 
-            // ── Style the launcher button ──
-            Object.assign(btn.style, {
-              background:   '#C8321A',
-              borderRadius: '100px',
-              padding:      '12px 24px',
-              border:       'none',
-              boxShadow:    '0 8px 24px rgba(200,50,26,0.35)',
-              cursor:       'pointer',
-            });
+  const observer = setInterval(() => {
 
-            // Hide any existing text/icon spans inside the button
-            btn.querySelectorAll('span, svg').forEach(el => {
-              el.style.display = 'none';
-            });
+    const buttons = document.querySelectorAll("button");
 
-            // Inject our custom label (only once)
-            if (!btn.querySelector('.park-pizza-label')) {
-              const label = document.createElement('span');
-              label.className = 'park-pizza-label';
-              Object.assign(label.style, {
-                fontFamily: 'Inter, sans-serif',
-                fontWeight: '600',
-                fontSize:   '0.875rem',
-                color:      '#ffffff',
-                pointerEvents: 'none',
-              });
-              label.textContent = '🍕 Order Now';
-              btn.appendChild(label);
-            }
+    buttons.forEach(btn => {
 
-            clearInterval(timer);
-          }
+      const text = (btn.innerText || "").toLowerCase();
 
-          if (tries >= MAX_TRIES) clearInterval(timer);
-        }, INTERVAL);
-      })();
-    </script>
+      if (
+        text.includes("support") ||
+        text.includes("need")
+      ) {
 
-  </body>
+        btn.innerHTML = "🍕 Order Here";
+
+        btn.style.background = "#C8321A";
+        btn.style.color = "#ffffff";
+        btn.style.border = "none";
+        btn.style.borderRadius = "999px";
+        btn.style.padding = "14px 22px";
+        btn.style.fontWeight = "600";
+        btn.style.boxShadow = "0 8px 25px rgba(200,50,26,.35)";
+
+        if (!window.retellAutoOpened) {
+
+          window.retellAutoOpened = true;
+
+          setTimeout(() => {
+            btn.click();
+          }, 1200);
+
+        }
+      }
+
+    });
+
+  }, 500);
+
+})();
+</script>
+
+</body>
 </html>
