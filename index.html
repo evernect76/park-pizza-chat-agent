@@ -146,101 +146,92 @@ nav{
   data-title="🍕 Order Now">
 </script>
 
-<!-- FIX + STYLE SHADOW DOM BUTTON -->
+
 <script>
 function applyRetellBranding() {
 
   document.querySelectorAll('div').forEach(host => {
+
     if (!host.shadowRoot) return;
 
     const root = host.shadowRoot;
 
-    // ---------------------------
-    // INJECT CSS INTO SHADOW DOM (overrides Retell's own styles)
-    // ---------------------------
-    if (!root.querySelector('style[data-park]')) {
-      const style = document.createElement('style');
-      style.setAttribute('data-park', '1');
-      style.textContent = `
-        button {
-          background: transparent !important;
-          box-shadow: none !important;
-          border: none !important;
-        }
-      `;
-      root.appendChild(style);
-    }
+    const buttons = root.querySelectorAll('button');
 
-    const btn = root.querySelector('button');
-    const text = root.querySelector('span');
+    buttons.forEach(btn => {
 
-    if (btn && text) {
+      const label = (btn.textContent || '').trim();
 
+      // ONLY style launcher button
       if (
-        text.textContent.includes("Need support") ||
-        text.textContent.includes("Support")
+        label.includes("Need support") ||
+        label.includes("Support") ||
+        label.includes("Order Here") ||
+        label.includes("Order Now")
       ) {
-        text.textContent = "🍕 Order Here";
+
+        const text = btn.querySelector('span');
+
+        if (
+          text &&
+          (
+            text.textContent.includes("Need support") ||
+            text.textContent.includes("Support")
+          )
+        ) {
+          text.textContent = "🍕 Order Here";
+        }
+
+        btn.style.setProperty('background', '#C8321A', 'important');
+        btn.style.setProperty('color', '#fff', 'important');
+        btn.style.setProperty('font-weight', '700', 'important');
+        btn.style.setProperty('font-family', 'Inter, sans-serif', 'important');
+
+        btn.onmouseenter = () => {
+          btn.style.setProperty(
+            'box-shadow',
+            '0 18px 55px rgba(200,50,26,0.5)',
+            'important'
+          );
+        };
+
+        btn.onmouseleave = () => {
+          btn.style.setProperty(
+            'box-shadow',
+            '0 12px 40px rgba(200,50,26,0.35)',
+            'important'
+          );
+        };
       }
+    });
 
-      // Re-apply red ONLY to the main Order Here button
-      btn.style.setProperty('background', '#C8321A', 'important');
-      btn.style.setProperty('color', '#fff', 'important');
-      btn.style.fontWeight = "700";
-      btn.style.fontFamily = "Inter, sans-serif";
-
-      btn.onmouseenter = () => {
-        btn.style.setProperty('box-shadow', '0 18px 55px rgba(200,50,26,0.5)', 'important');
-      };
-      btn.onmouseleave = () => {
-        btn.style.setProperty('box-shadow', '0 12px 40px rgba(200,50,26,0.35)', 'important');
-      };
-    }
-
-    // Status dot
+    // Hide status indicator only
     const statusDot =
       root.querySelector('[class*="status"]') ||
       root.querySelector('[class*="indicator"]') ||
       root.querySelector('svg + div');
-    if (statusDot) statusDot.style.display = "none";
 
-    // Chat window size
-    const chatWindow =
-      root.querySelector('div[role="dialog"]') ||
-      root.querySelector('div');
-    if (chatWindow) {
-      chatWindow.style.maxHeight = "70vh";
-      chatWindow.style.height = "70vh";
-      chatWindow.style.width = "380px";
-      chatWindow.style.borderRadius = "18px";
-      chatWindow.style.overflow = "hidden";
+    if (statusDot) {
+      statusDot.style.display = "none";
+    }
+
+    // Chat window sizing
+    const dialog = root.querySelector('div[role="dialog"]');
+
+    if (dialog) {
+      dialog.style.maxHeight = "70vh";
+      dialog.style.height = "70vh";
+      dialog.style.width = "380px";
+      dialog.style.borderRadius = "18px";
+
+      // IMPORTANT: keep footer visible
+      dialog.style.overflow = "visible";
     }
   });
 }
 
-// Run continuously (Retell resets UI on close/open)
+// Run continuously because Retell re-renders
 setInterval(applyRetellBranding, 300);
-</script>
-
-<!-- AUTO OPEN WIDGET -->
-<script>
-window.addEventListener("load", () => {
-
-  setTimeout(() => {
-
-    document.querySelectorAll('div').forEach(host => {
-      if (!host.shadowRoot) return;
-
-      const root = host.shadowRoot;
-      const btn = root.querySelector('button');
-
-      if (btn) btn.click();
-
-    });
-
-  }, 1200);
-
-});
 </script>
 
 </body>
