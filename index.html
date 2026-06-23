@@ -108,8 +108,13 @@ nav{
 
 /* MOBILE */
 @media(max-width:768px){
-  html,body{overflow:auto;}
-  nav{padding:16px 20px;}
+  html,body{
+    overflow:auto;
+  }
+
+  nav{
+    padding:16px 20px;
+  }
 }
 </style>
 </head>
@@ -123,7 +128,9 @@ nav{
 <section class="hero">
   <div class="hero-content">
 
-    <div class="hero-eyebrow">Now Taking Orders Via AI</div>
+    <div class="hero-eyebrow">
+      Now Taking Orders Via AI
+    </div>
 
     <h1>
       Great Pizza,<br>
@@ -131,107 +138,108 @@ nav{
     </h1>
 
     <p class="hero-sub">
-      Chat with our AI assistant to browse the menu, customize your order.
+      Chat with our AI assistant to browse the menu,
+      customize your order, and place it instantly.
     </p>
 
   </div>
 </section>
 
-<!-- RETELL WIDGET -->
+<!-- RETELL CHAT WIDGET -->
 <script
   id="retell-widget"
   src="https://dashboard.retellai.com/retell-widget-v2.js"
   data-public-key="public_key_35163ac2f5fe6b1c44bee"
   data-agent-id="agent_128c4a5a69b348a97656589c1d"
-  data-title="🍕 Order Now">
-</script>
 
+  data-title="Park Pizza"
+  data-fab-text="Order Here"
+  data-bot-name="Park Pizza AI"
+
+  data-theme-color="#1A1208"
+  data-component-color="#C8321A"
+
+  data-logo-url="parkpizza logo.webp"
+  data-bot-name="Park Pizza AI"
+  data-popup-message="Ready to order?"
+  data-show-ai-popup="true"
+  data-show-ai-popup-time="2"
+  data-auto-open="true"
+>
+</script>
 
 <script>
 function applyRetellBranding() {
 
-  document.querySelectorAll('div').forEach(host => {
+  document.querySelectorAll('*').forEach(el => {
 
-    if (!host.shadowRoot) return;
+    if (!el.shadowRoot) return;
 
-    const root = host.shadowRoot;
+    const root = el.shadowRoot;
+    
+  
+    // Launcher Button
+    root.querySelectorAll('button').forEach(btn => {
 
-    const buttons = root.querySelectorAll('button');
+      btn.style.setProperty(
+        'font-family',
+        'Inter, sans-serif',
+        'important'
+      );
 
-    buttons.forEach(btn => {
+      btn.style.setProperty(
+        'font-weight',
+        '700',
+        'important'
+      );
 
-      const label = (btn.textContent || '').trim();
+      btn.style.setProperty(
+        'border-radius',
+        '999px',
+        'important'
+      );
 
-      // ONLY style launcher button
-      if (
-        label.includes("Need support") ||
-        label.includes("Support") ||
-        label.includes("Order Here") ||
-        label.includes("Order Now")
-      ) {
-
-        const text = btn.querySelector('span');
-
-        if (
-          text &&
-          (
-            text.textContent.includes("Need support") ||
-            text.textContent.includes("Support")
-          )
-        ) {
-          text.textContent = "🍕 Order Here";
-        }
-
-        btn.style.setProperty('background', '#C8321A', 'important');
-        btn.style.setProperty('color', '#fff', 'important');
-        btn.style.setProperty('font-weight', '700', 'important');
-        btn.style.setProperty('font-family', 'Inter, sans-serif', 'important');
-
-        btn.onmouseenter = () => {
-          btn.style.setProperty(
-            'box-shadow',
-            '0 18px 55px rgba(200,50,26,0.5)',
-            'important'
-          );
-        };
-
-        btn.onmouseleave = () => {
-          btn.style.setProperty(
-            'box-shadow',
-            '0 12px 40px rgba(200,50,26,0.35)',
-            'important'
-          );
-        };
-      }
+      btn.style.setProperty(
+        'box-shadow',
+        '0 12px 40px rgba(200,50,26,.35)',
+        'important'
+      );
     });
 
-    // Hide status indicator only
-    const statusDot =
-      root.querySelector('[class*="status"]') ||
-      root.querySelector('[class*="indicator"]') ||
-      root.querySelector('svg + div');
-
-    if (statusDot) {
-      statusDot.style.display = "none";
-    }
-
-    // Chat window sizing
-    const dialog = root.querySelector('div[role="dialog"]');
+    // Chat Window
+    const dialog =
+  root.querySelector('[role="dialog"]');
 
     if (dialog) {
-      dialog.style.maxHeight = "70vh";
-      dialog.style.height = "70vh";
-      dialog.style.width = "380px";
+
       dialog.style.borderRadius = "18px";
 
-      // IMPORTANT: keep footer visible
-      dialog.style.overflow = "visible";
+      dialog.style.width = "290px";
+      dialog.style.minWidth = "290px";
+      dialog.style.maxWidth = "290px";
+
+      dialog.style.height = "430px";
+      dialog.style.minHeight = "430px";
+      dialog.style.maxHeight = "430px";
+
+      dialog.style.boxShadow =
+        "0 8px 25px rgba(0,0,0,.12)";
+
+      dialog.style.border =
+        "1px solid rgba(0,0,0,.08)";
     }
+
+    // Hide status dots
+    root.querySelectorAll(
+      '[class*=status],[class*=indicator]'
+    ).forEach(el => {
+      el.style.display = 'none';
+    });
+
   });
 }
 
-// Run continuously because Retell re-renders
-setInterval(applyRetellBranding, 300);
+setInterval(applyRetellBranding, 1000);
 </script>
 
 </body>
